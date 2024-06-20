@@ -20,7 +20,7 @@ resource "aws_s3_bucket_policy" "app_bucket_policy" {
             "s3:GetObject"
         ],
         "Effect": "Allow",
-        "Resource": "*",
+        "Resource": "arn:aws:s3:::${aws_s3_bucket.app_bucket.bucket}/*",
         "Principal": "*"
         }
     ]
