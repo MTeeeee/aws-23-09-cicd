@@ -3,7 +3,7 @@ name: Node.js CI
 on: [push]
 
 env:
-  BUCKET_NAME: terraform-state-231121
+  BUCKET_NAME: react-app-trololol
 
 jobs:
   build:
