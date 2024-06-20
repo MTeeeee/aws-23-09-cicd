@@ -7,7 +7,7 @@ resource "aws_s3_bucket" "app_bucket" {
   }
 }
 
-resource "aws_s3_bucket_policy" "allow_access" {
+resource "aws_s3_bucket_policy" "app_bucket_policy" {
   bucket = aws_s3_bucket.app_bucket.id
   policy = <<POLICY
     {
@@ -28,7 +28,7 @@ resource "aws_s3_bucket_policy" "allow_access" {
   POLICY
 }
 
-resource "aws_s3_bucket_public_access_block" "app-access-block" {
+resource "aws_s3_bucket_public_access_block" "app_bucket" {
   bucket = aws_s3_bucket.app_bucket.id
 
   block_public_acls       = false
