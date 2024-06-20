@@ -2,6 +2,9 @@ name: Node.js CI
 
 on: [push]
 
+env:
+  BUCKET_NAME: terraform-state-231121
+
 jobs:
   build:
 
@@ -20,3 +23,20 @@ jobs:
         with:
           name: dist-files
           path: ./dist
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.1.7"
+      - id: install-aws-cli
+        uses: unfor19/install-aws-cli-action@v1
+      - run: mkdir -p ~/.aws
+      - run: echo "$super_secret" > ~/.aws/credentials
+        env: # Or as an environment variable
+          super_secret: ${{ secrets.AWS_CONFIG }}
+      - run: cat ~/.aws/credentials
+      - run: aws configure list-profiles
+      - run: aws s3 ls --region eu-central-1 --profile techstarter
+      - run: terraform version
+      - run: terraform -chdir=./infra init
+      - run: terraform -chdir=./infra validate
+      - run: terraform -chdir=./infra apply -auto-approve
+      - run: aws s3 sync --region eu-central-1 ./dist s3://$BUCKET_NAME/ --profile techstarter
